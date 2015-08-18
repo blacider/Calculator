@@ -9,11 +9,7 @@ public class Calculator implements ActionListener {
 	public static void main(String[] args) {
 		new Calculator();
 	}
-	private JButton b1;
-	private JButton b2;
-	private JButton b3;
-	private JButton b4;
-	private JButton b5;
+	private JButton[] b = new JButton[5];
 	private JFrame frame;
 	private JPanel contentPane;
 	private GridLayout grid;
@@ -37,11 +33,11 @@ public class Calculator implements ActionListener {
 		grid = new GridLayout(2,5);
 		contentPane.setLayout(grid);
 
-		b1 = new JButton("+");
-		b2 = new JButton("-");
-		b3 = new JButton("*");
-		b4 = new JButton("/");
-		b5 = new JButton("ok");
+		b[0] = new JButton("+");
+		b[1] = new JButton("-");
+		b[2] = new JButton("*");
+		b[3] = new JButton("/");
+		b[4] = new JButton("ok");
 
 		l1 = new JLabel();
 		l2 = new JLabel("=");
@@ -58,22 +54,14 @@ public class Calculator implements ActionListener {
 		contentPane.add(text2);
 		contentPane.add(l2);
 		contentPane.add(l3);
-		contentPane.add(b1);
-		contentPane.add(b2);
-		contentPane.add(b3);
-		contentPane.add(b4);
-		contentPane.add(b5);
+		for (int i = 0; i < b.length; i++) contentPane.add(b[i]);
 
 		addListener();
 
 		frame.pack();
 	}
 	private void addListener() {
-		b1.addActionListener(this);
-		b2.addActionListener(this);
-		b3.addActionListener(this);
-		b4.addActionListener(this);
-		b5.addActionListener(this);
+		for (int i = 0; i < b.length; i++) b[i].addActionListener(this);
 	}
 	private void initFrame() {
 		frame.setSize(300, 200);

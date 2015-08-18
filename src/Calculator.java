@@ -4,35 +4,55 @@
 //************************************************************************
 import javax.swing.*;
 import java.awt.*;
-public class Calculator {
+import java.awt.event.*;
+public class Calculator implements ActionListener {
 	public static void main(String[] args) {
-		JFrame frame = new JFrame();
-		frame.setSize(300, 200);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);
-		frame.setTitle("Calculator");
-		frame.setResizable(false);
+		new Calculator();
+	}
+	private JButton b1;
+	private JButton b2;
+	private JButton b3;
+	private JButton b4;
+	private JButton b5;
+	private JFrame frame;
+	private JPanel contentPane;
+	private GridLayout grid;
+	private JLabel l1;
+	private JLabel l2;
+	private JLabel l3;
+	private JTextField text1;
+	private JTextField text2;
+	public Calculator() {
+		initComponent();
+	}
+	private void initComponent() {
+		frame = new JFrame();
 
-		JPanel contentPane = new JPanel();
+		initFrame();
+
+		contentPane = new JPanel();
+		
 		frame.setContentPane(contentPane);
 		
-		final JButton b1 = new JButton("+");
-		final JButton b2 = new JButton("-");
-		final JButton b3 = new JButton("*");
-		final JButton b4 = new JButton("/");
-		final JButton b5 = new JButton("ok");
-
-		GridLayout grid = new GridLayout(2,5);
+		grid = new GridLayout(2,5);
 		contentPane.setLayout(grid);
 
+		b1 = new JButton("+");
+		b2 = new JButton("-");
+		b3 = new JButton("*");
+		b4 = new JButton("/");
+		b5 = new JButton("ok");
 
-		final JLabel l1 = new JLabel();
-		final JLabel l2 = new JLabel("=");
-		final JLabel l3 = new JLabel();
+		l1 = new JLabel();
+		l2 = new JLabel("=");
+		l3 = new JLabel();
 
-		final JTextField text1 = new JTextField();
-		final JTextField text2 = new JTextField();
-		
+		text1 = new JTextField();
+		text2 = new JTextField();
+
+		addComponent();
+	}
+	private void addComponent() {
 		contentPane.add(text1);
 		contentPane.add(l1);
 		contentPane.add(text2);
@@ -44,35 +64,41 @@ public class Calculator {
 		contentPane.add(b4);
 		contentPane.add(b5);
 
-		b1.addActionListener(new java.awt.event.ActionListener(){
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				l1.setText(b1.getText());
-			}
-		});
-		b2.addActionListener(new java.awt.event.ActionListener(){
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				l1.setText(b2.getText());
-			}
-		});
-		b3.addActionListener(new java.awt.event.ActionListener(){
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				l1.setText(b3.getText());
-			}
-		});
-		b4.addActionListener(new java.awt.event.ActionListener(){
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
-				l1.setText(b4.getText());
-			}
-		});
-		b5.addActionListener(new java.awt.event.ActionListener(){
-			public void actionPerformed(java.awt.event.ActionEvent evt) {
+		addListener();
+
+		frame.pack();
+	}
+	private void addListener() {
+		b1.addActionListener(this);
+		b2.addActionListener(this);
+		b3.addActionListener(this);
+		b4.addActionListener(this);
+		b5.addActionListener(this);
+	}
+	private void initFrame() {
+		frame.setSize(300, 200);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setTitle("Calculator");
+		frame.setResizable(false);
+	}
+	public void actionPerformed (ActionEvent e){
+  		String op = e.getActionCommand();
+  		switch(op) {
+			case "+":
+			case "-":
+			case "*":
+			case "/":
+				l1.setText(op);
+				break;
+			case "ok":
 				if (text1.getText().length() == 0 || text2.getText().length() == 0) {
 					showErrorMessage("请输入正确数据");
-					return;
+					break;
 				}
 				if (l1.getText().length() == 0) {
 					showErrorMessage("请选择操作!");
-					return;
+					break;
 				}
 				Float val1 = Float.parseFloat(text1.getText());
 				Float val2 = Float.parseFloat(text2.getText());
@@ -94,12 +120,10 @@ public class Calculator {
 						l3.setText(String.valueOf(val1/val2));
 						break;
 				}
-			}
-		});
-
-		frame.pack();
-	}
-	private static void showErrorMessage(String str) {
+				break;
+		}
+ 	}
+	private void showErrorMessage(String str) {
 		Toolkit.getDefaultToolkit().beep();
 		JOptionPane.showMessageDialog(null, str, "ERROR_MESSAGE",JOptionPane.ERROR_MESSAGE);
 	}
